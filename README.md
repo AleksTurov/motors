@@ -40,4 +40,23 @@ S-score is popular in competitions (like NASA C-MAPSS and Kaggle) because it ref
 
 The data file should be placed in `data/Data.csv`. It contains sensor readings and cycles for each motor.
 
----
+
+## Model Comparison and Error Analysis
+
+| Model              | MAE (all) | RMSE (all) | S-score (test) | S-score (CV)   | RUL ≤ 60 MAE | RUL ≤ 60 RMSE |
+|--------------------|-----------|------------|----------------|---------------|--------------|--------------|
+| Linear Regression  |   22      |   29       |   ~120,000     | ~19,000,000   |   10         |   13         |
+| XGBoost            |  17.95    |  24.54     |   ~98,000      | ~18,800,000   |   9.08       |   14.02      |
+| CatBoost           |  17.00    |  23.10     |   65,533       | 18,503,862    |   7.63       |   10.37      |
+
+**Main conclusions:**
+- CatBoost is the best model, showing the lowest errors and the best S-score.
+- XGBoost also performs well, slightly behind CatBoost and much better than Linear Regression.
+- All models sometimes overestimate the remaining useful life, which can be risky for maintenance planning.
+- Most errors are small, but occasionally the models make large mistakes, especially for high RUL values.
+- CatBoost is more reliable for short RUL values (≤ 60), which is important for safety.
+
+**Extra analysis:**  
+To better understand where the model makes mistakes, check the error distribution by RUL ranges (see the plot in the notebook).
+
+> It is recommended to further improve the model or add a penalty for overestimation to make predictions safer for
