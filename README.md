@@ -21,9 +21,8 @@ This project predicts the Remaining Useful Life (RUL) of motors using sensor dat
 
 ## Why S-score metric is used
 
-S-score is a special metric for RUL prediction. If the model predicts less life than the motor really has, it gets a big penalty. If it predicts more, the penalty is smaller. This helps make models safer for real use.
+S-score is a special metric for RUL prediction. If the model predicts more life than the motor really has (overestimation), it gets a big penalty. If it predicts less (underestimation), the penalty is smaller. This helps to avoid risky overestimation and makes models safer for real use.
 
-S-score is popular in competitions (like NASA C-MAPSS and Kaggle) because it reflects real risks in maintenance.
 
 ## How to use
 
@@ -47,7 +46,10 @@ The data file should be placed in `data/Data.csv`. It contains sensor readings a
 |--------------------|-----------|------------|----------------|-------------------|--------------|--------------|
 | Linear Regression  |   26.64   |   34.24    | 115,892,000    | 4.8e+18           |   19.26      |   23.76      |
 | XGBoost            |   18.48   |   26.39    |   224,635      | 22,550,792        |    6.77      |   10.51      |
-| CatBoost           |   17.12   |   23.83    |   65,533       | 18,503,862        |    6.91      |   10.02      |
+| CatBoost           |   17.12   |   23.83    |   132,291      | 12,534,830        |    6.91      |   10.02      |
+
+S-score penalizes overestimation (predicting too much RUL) much more than underestimation.
+
 
 **Main conclusions:**
 - CatBoost is the best model, showing the lowest errors and the best S-score.
@@ -60,9 +62,6 @@ The data file should be placed in `data/Data.csv`. It contains sensor readings a
 To better understand where the model makes mistakes, check the error distribution by RUL ranges (see the plot in the notebook).
 
 ## What can be improved next
-
-- **Penalty for overestimation:**  
-  You can make the model safer by adding a penalty if it predicts too much remaining life. This will help in real maintenance planning.
 
 - **Feature selection:**  
   After making rolling and trend features, you can choose only the most important ones (for example, using SHAP values or Boruta).
