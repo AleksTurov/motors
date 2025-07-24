@@ -43,11 +43,11 @@ The data file should be placed in `data/Data.csv`. It contains sensor readings a
 
 ## Model Comparison and Error Analysis
 
-| Model              | MAE (all) | RMSE (all) | S-score (test) | S-score (CV)   | RUL ≤ 60 MAE | RUL ≤ 60 RMSE |
-|--------------------|-----------|------------|----------------|---------------|--------------|--------------|
-| Linear Regression  |   22      |   29       |   ~120,000     | ~19,000,000   |   10         |   13         |
-| XGBoost            |  17.95    |  24.54     |   ~98,000      | ~18,800,000   |   9.08       |   14.02      |
-| CatBoost           |  17.00    |  23.10     |   65,533       | 18,503,862    |   7.63       |   10.37      |
+| Model              | MAE (all) | RMSE (all) | S-score (test) | S-score (CV)      | RUL ≤ 60 MAE | RUL ≤ 60 RMSE |
+|--------------------|-----------|------------|----------------|-------------------|--------------|--------------|
+| Linear Regression  |   26.64   |   34.24    | 115,892,000    | 4.8e+18           |   19.26      |   23.76      |
+| XGBoost            |   18.48   |   26.39    |   224,635      | 22,550,792        |    6.77      |   10.51      |
+| CatBoost           |   17.12   |   23.83    |   65,533       | 18,503,862        |    6.91      |   10.02      |
 
 **Main conclusions:**
 - CatBoost is the best model, showing the lowest errors and the best S-score.
@@ -59,4 +59,22 @@ The data file should be placed in `data/Data.csv`. It contains sensor readings a
 **Extra analysis:**  
 To better understand where the model makes mistakes, check the error distribution by RUL ranges (see the plot in the notebook).
 
-> It is recommended to further improve the model or add a penalty for overestimation to make predictions safer for
+## What can be improved next
+
+- **Penalty for overestimation:**  
+  You can make the model safer by adding a penalty if it predicts too much remaining life. This will help in real maintenance planning.
+
+- **Feature selection:**  
+  After making rolling and trend features, you can choose only the most important ones (for example, using SHAP values or Boruta).
+
+- **Hyperparameter tuning:**  
+  You can try to find the best model settings using tools like GridSearchCV or Optuna.
+
+- **Time-based validation:**  
+  It is better to use TimeSeriesSplit for cross-validation because it works well with time data.
+
+- **Business logic postprocessing:**  
+  You can change the predictions after the model works. For example, if the model often predicts too much RUL, you can make a correction or add a "safety margin".
+
+- **Automation:**  
+  You can make a script or function for the whole process. This will help you run the model on new data easily.
