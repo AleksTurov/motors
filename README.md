@@ -42,11 +42,12 @@ The data file should be placed in `data/Data.csv`. It contains sensor readings a
 
 ## Model Comparison and Error Analysis
 
-| Model              | MAE (all) | RMSE (all) | S-score (test) | S-score (CV)      | RUL ≤ 60 MAE | RUL ≤ 60 RMSE |
-|--------------------|-----------|------------|----------------|-------------------|--------------|--------------|
-| Linear Regression  |   26.64   |   34.24    | 115,892,000    | 4.8e+18           |   19.26      |   23.76      |
-| XGBoost            |   18.48   |   26.39    |   224,635      | 22,550,792        |    6.77      |   10.51      |
-| CatBoost           |   17.12   |   23.83    |   132,291      | 12,534,830        |    6.91      |   10.02      |
+| Model              | MAE (all) | RMSE (all) | S-score (test) | RUL ≤ 60 MAE | RUL ≤ 60 RMSE |
+|--------------------|-----------|------------|----------------|--------------|--------------|
+| Linear Regression  |   26.64   |   34.24    | 115,892,000    |   19.26      |   23.76      |
+| XGBoost            |   18.48   |   26.39    |   224,635      |    6.77      |   10.51      |
+| CatBoost           |   17.12   |   23.83    |   132,291      |    6.91      |   10.02      |
+
 
 S-score penalizes overestimation (predicting too much RUL) much more than underestimation.
 
@@ -64,13 +65,10 @@ To better understand where the model makes mistakes, check the error distributio
 ## What can be improved next
 
 - **Feature selection:**  
-  After making rolling and trend features, you can choose only the most important ones (for example, using SHAP values or Boruta).
+  After making rolling and trend features, you can choose only the most important ones (for example, using SHAP values or Boruta). 
 
 - **Hyperparameter tuning:**  
   You can try to find the best model settings using tools like GridSearchCV or Optuna.
-
-- **Time-based validation:**  
-  It is better to use TimeSeriesSplit for cross-validation because it works well with time data.
 
 - **Business logic postprocessing:**  
   You can change the predictions after the model works. For example, if the model often predicts too much RUL, you can make a correction or add a "safety margin".
